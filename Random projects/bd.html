@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, my wife!</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- RESET & GLOBAL STYLES --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-midnight: #0B192C;
+            --bg-deep-blue: #1E3E62;
+            --accent-pink: #FF65A3;
+            --accent-glow: #FF8A9A;
+            --text-light: #F5F7F8;
+            --text-muted: #B0C4DE;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-midnight);
+            color: var(--text-light);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            background: radial-gradient(circle at center, var(--bg-deep-blue) 0%, var(--bg-midnight) 100%);
+            overflow: hidden;
+        }
+
+        /* Floating Stars Background */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: blink 3s infinite ease-in-out;
+        }
+
+        .heart-particle {
+            position: absolute;
+            color: var(--accent-pink);
+            font-size: 1.5rem;
+            opacity: 0;
+            animation: floatUp 6s infinite linear;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            opacity: 0;
+            animation: fadeIn 2s ease-out forwards;
+        }
+
+        .hero h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(255, 101, 163, 0.6);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 40px auto;
+            line-height: 1.6;
+        }
+
+        /* Call to Action Button */
+        .btn-scroll {
+            display: inline-block;
+            padding: 12px 30px;
+            background: transparent;
+            color: var(--accent-pink);
+            border: 2px solid var(--accent-pink);
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 101, 163, 0.2);
+        }
+
+        .btn-scroll:hover {
+            background: var(--accent-pink);
+            color: var(--bg-midnight);
+            box-shadow: 0 0 25px rgba(255, 101, 163, 0.6);
+            transform: translateY(-3px);
+        }
+
+        /* --- GALLERY SECTION --- */
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 20px;
+        }
+
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '❤️';
+            display: block;
+            font-size: 1.2rem;
+            margin-top: 10px;
+            color: var(--accent-pink);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            aspect-ratio: 4 / 5;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        /* Overlay Hover Effect */
+        .gallery-item::after {
+            content: 'Click to open memory';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(11, 25, 44, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.9rem;
+            color: var(--accent-glow);
+            letter-spacing: 1px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.03);
+            border-color: var(--accent-pink);
+            box-shadow: 0 0 25px rgba(255, 101, 163, 0.3);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-item:hover::after {
+            opacity: 1;
+        }
+
+        /* --- VIDEO SECTION --- */
+        .video-section {
+            background: linear-gradient(180deg, var(--bg-midnight) 0%, var(--bg-deep-blue) 50%, var(--bg-midnight) 100%);
+        }
+
+        .video-card {
+            background: rgba(11, 25, 44, 0.6);
+            border: 1px solid rgba(255, 101, 163, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        }
+
+        .video-card p {
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            background: #000;
+            box-shadow: 0 0 20px rgba(0,0,0,0.6);
+            margin-bottom: 30px;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            border: none;
+        }
+
+        .btn-video-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 35px;
+            background: var(--accent-pink);
+            color: var(--bg-midnight);
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-video-link:hover {
+            background: var(--accent-glow);
+            box-shadow: 0 0 25px rgba(255, 101, 163, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* --- INTERACTIVE MODAL --- */
+        .modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(11, 25, 44, 0.95);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            padding: 20px;
+        }
+
+        .modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: var(--bg-deep-blue);
+            border: 1px solid rgba(255, 101, 163, 0.3);
+            max-width: 500px;
+            width: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            transform: scale(0.8);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-img {
+            width: 100%;
+            max-height: 350px;
+            object-fit: cover;
+        }
+
+        .modal-caption {
+            padding: 25px;
+            text-align: center;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-light);
+            font-style: italic;
+        }
+
+        .modal-close {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--accent-pink);
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 101, 163, 0.1);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* --- KEYFRAMES & ANIMATIONS --- */
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(105vh) translateX(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-10vh) translateX(50px) rotate(360deg); opacity: 0; }
+        }
+
+        /* --- RESPONSIVE DESIGN --- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.3rem; }
+            .hero p { font-size: 1rem; }
+            .section-title { font-size: 2rem; }
+            .video-card { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+        <div class="stars" id="starsContainer"></div>
+        <div class="hero-content">
+            <h1>Happy Birthday Hayathi!💙</h1>
+            <p>To the woman who lights up my world, know that you are unique, strong and I love you just the way you are.</p>
+            <a href="#gallery" class="btn-scroll">ik u like to push my buttons but push this for now</a>
+        </div>
+    </section>
+
+    <section id="gallery" class="section-container">
+        <h2 class="section-title">My absolute fav pics of youuuuuu!</h2>
+        
+        <div class="gallery-grid">
+            <div class="gallery-item" onclick="openModal(this)" data-caption="I FUCKING LOVE THIS PIC ANGEL, you're just admiring the view and I loveee itttt sooo muchhhh cutieeeeeee">
+                <img src="1.jpeg" alt="Memory 1">
+            </div>
+
+            <div class="gallery-item" onclick="openModal(this)" data-caption="That smileeee babyyy my heart!!!">
+                <img src="2.jpeg" alt="Memory 2">
+            </div>
+
+            <div class="gallery-item" onclick="openModal(this)" data-caption="The look on your face was priceless my love">
+                <img src="3.jpeg" alt="Memory 3">
+            </div>
+
+            <div class="gallery-item" onclick="openModal(this)" data-caption="My lil brat">
+                <img src="4.jpeg" alt="Memory 4">
+            </div>
+			<div class="gallery-item" onclick="openModal(this)" data-caption="look at ur cute eyes and face and smile babyy">
+                <img src="5.jpeg" alt="Memory 4">
+            </div>
+			<div class="gallery-item" onclick="openModal(this)" data-caption="you look like a duck here, and sexy boobies;)">
+                <img src="6.jpeg" alt="Memory 4">
+            </div>
+			<div class="gallery-item" onclick="openModal(this)" data-caption="No words. SMASH.🤤🤤🤤🤤">
+                <img src="7.jpeg" alt="Memory 4">
+            </div>
+			<div class="gallery-item" onclick="openModal(this)" data-caption="CUTE AS FUCK MY HEARTTTT">
+                <img src="8.jpeg" alt="Memory 4">
+            </div>
+			<div class="gallery-item" onclick="openModal(this)" data-caption="Love how ur looking at me here">
+                <img src="9.jpeg" alt="Memory 4">
+            </div>
+			<div class="gallery-item" onclick="openModal(this)" data-caption="ur smileeeeeeeeeeeee i could drink it fr">
+                <img src="10.jpeg" alt="Memory 4">
+            </div>
+			<div class="gallery-item" onclick="openModal(this)" data-caption="Little brat😂😂😂 A DIVAAA">
+                <img src="11.jpeg" alt="Memory 4">
+            </div>
+			<div class="gallery-item" onclick="openModal(this)" data-caption="Got a good look, sir?">
+                <img src="12.jpeg" alt="Memory 4">
+            </div>
+			<div class="gallery-item" onclick="openModal(this)" data-caption="Ik ur right where u wana be😌">
+                <img src="13.jpeg" alt="Memory 4">
+            </div>
+			<div class="gallery-item" onclick="openModal(this)" data-caption="Damn sure ur a descendant of Flynn Rider just can't prove it:/">
+                <img src="14.jpeg" alt="Memory 4">
+            </div>
+        </div>
+    </section>
+
+    <section class="video-section">
+        <div class="section-container">
+            <h2 class="section-title">A smol surprise for uuu</h2>
+            <div class="video-card">
+               
+                
+                <div class="video-wrapper">
+                    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+                </div>
+
+                <a href="https://www.youtube.com" target="_blank" class="btn-video-link">
+                    <span>Watch Full Screen ✨</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal" id="memoryModal" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <img src="" alt="Expanded Memory" class="modal-img" id="modalImg">
+            <div class="modal-caption" id="modalCaption"></div>
+            <button class="modal-close" onclick="closeModal(event)">Close Memory</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>Made with love by your dear wife💕</p>
+    </footer>
+
+    <script>
+        // 1. GENERATE BACKGROUND PARTICLES (STARS & HEARTS)
+        const starsContainer = document.getElementById('starsContainer');
+        const heartIcons = ['🤍', '🩵', '✨', '💙'];
+
+        function createParticles() {
+            // Generate Stars
+            for (let i = 0; i < 60; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                star.style.width = `${Math.random() * 3}px`;
+                star.style.height = star.style.width;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 3}s`;
+                starsContainer.appendChild(star);
+            }
+
+            // Continuously Spawn Floating Hearts
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.classList.add('heart-particle');
+                heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
+                heart.style.left = `${Math.random() * 100}%`;
+                heart.style.animationDuration = `${Math.random() * 3 + 4}s`; // 4s to 7s duration
+                heart.style.fontSize = `${Math.random() * 1 + 1}rem`;
+                
+                starsContainer.appendChild(heart);
+
+                // Remove after animation ends
+                setTimeout(() => {
+                    heart.remove();
+                }, 7000);
+            }, 600);
+        }
+
+        // 2. MODAL INTERACTION LOGIC
+        const modal = document.getElementById('memoryModal');
+        const modalImg = document.getElementById('modalImg');
+        const modalCaption = document.getElementById('modalCaption');
+
+        function openModal(element) {
+            const imgSrc = element.querySelector('img').src;
+            const captionText = element.getAttribute('data-caption');
+
+            modalImg.src = imgSrc;
+            modalCaption.innerText = captionText;
+            modal.classList.add('active');
+            
+            // Prevent body background scrolling when modal is open
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(event) {
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Initialize particles on load
+        window.addEventListener('DOMContentLoaded', createParticles);
+    </script>
+</body>
+</html>
